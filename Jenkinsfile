@@ -33,11 +33,11 @@ pipeline {
         stage("SonarQube Analysis") {
             steps {
                 script {
-                    // Ensure 'SonarQube' matches the SonarQube instance name configured in Jenkins
-                    withSonarQubeEnv('SonarQube') { 
-                        sh "mvn sonar:sonar -X" // Run SonarQube analysis with debug logs enabled
-                    }
-                }
+            // Use the exact name of your SonarQube installation from Jenkins configuration
+            withSonarQubeEnv('SonarQube') { 
+                sh "mvn sonar:sonar -X"
+            }
+        }
             }
         }
 
