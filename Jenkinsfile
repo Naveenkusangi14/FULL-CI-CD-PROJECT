@@ -4,7 +4,15 @@ pipeline {
         maven 'M3' // Ensure Maven is configured correctly in Jenkins
         // jdk 'Java17' // Uncomment if needed, and ensure the JDK is configured
     }
-
+   environment {
+	    APP_NAME = "register-app-pipeline"
+            RELEASE = "1.0.0"
+            DOCKER_USER = "staya1407"
+            DOCKER_PASS = 'dockerhub'
+            IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+            IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+	    
+    }
     stages {
         stage("Cleanup Workspace") {
             steps {
@@ -30,16 +38,16 @@ pipeline {
             }
         }
 
-        stage("SonarQube Analysis") {
-            steps {
-                script {
-            // Use the exact name of your SonarQube installation from Jenkins configuration
-            withSonarQubeEnv('SonarQube') { 
-                sh "mvn sonar:sonar -X"
-            }
-        }
-            }
-        }
+        // stage("SonarQube Analysis") {
+        //     steps {
+        //         script {
+        //     // Use the exact name of your SonarQube installation from Jenkins configuration
+        //     withSonarQubeEnv('SonarQube') { 
+        //         sh "mvn sonar:sonar -X"
+        //     }
+        // }
+        //     }
+        // }
 
         // Optional: Uncomment the following stage if you have a quality gate configured
         /*
@@ -54,7 +62,7 @@ pipeline {
         */
 
         // Optional: Uncomment this stage for Docker image build and push to a registry
-        /*
+        
         stage("Build & Push Docker Image") {
             steps {
                 script {
@@ -69,7 +77,7 @@ pipeline {
                 }
             }
         }
-        */
+        
     }
 
     post {
